@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/Alex/IONIC/android_ionic_app2/platforms/android/CordovaLib/assets"/></dataSet><dataSet config="debug"><source path="/Users/Alex/IONIC/android_ionic_app2/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/boliao/Desktop/midterm-master/platforms/android/CordovaLib/assets"/></dataSet><dataSet config="debug"><source path="/Users/boliao/Desktop/midterm-master/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>

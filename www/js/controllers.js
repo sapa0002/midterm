@@ -52,13 +52,13 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 
-.controller('TodoBizCtrl', function($scope, taskservices, $stateParams,  $cordovaVibration, $rootScope ) {
+.controller('TodoBizCtrl', function($scope, taskservices, $stateParams,  $cordovaVibration, $rootScope, $cordovaLocalNotification ) {
 
     $scope.tasks = taskservices.all($stateParams.todo_id);
 
     $scope.todobiz = {task:""};
 
-    var cordova_vibration = $cordovaVibration;
+   // var cordova_vibration = $cordovaVibration;
 
 
   $scope.addTask = function() {
@@ -66,9 +66,11 @@ angular.module('starter.controllers', ['ngCordova'])
        taskservices.add({name: $scope.todobiz.task, status: false}, $stateParams.todo_id);
        $scope.todobiz.task = "";
 
-        if($scope.tasks.length == 0){$scope.tasks = taskservices.all($stateParams.todo_id);}
+        if($scope.tasks.length == 0){
+            $scope.tasks = taskservices.all($stateParams.todo_id);
+       }
 
-        }
+     }
 
 
   $scope.removeTask = function(index) {
@@ -85,15 +87,15 @@ angular.module('starter.controllers', ['ngCordova'])
        if ($rootScope.pushNotification.checked) {
 
 
-          if($scope.tasks[index].status){
+            if($scope.tasks[index].status){
 
-
-           try {
-             cordova_vibration.vibrate(100);
+            //alert("hi");
+          try {
+             $cordovaVibration.vibrate(500);
            }
             catch (e) {
-              alert("vibration");
-            }
+             alert("vibration");
+           }
          }
 
        }
@@ -115,7 +117,7 @@ angular.module('starter.controllers', ['ngCordova'])
         }
        if (count == $scope.tasks.length){
 
-          try {
+              try {
 
             $cordovaLocalNotification.schedule({
 
@@ -126,13 +128,11 @@ angular.module('starter.controllers', ['ngCordova'])
           catch (e) {
             alert("notification");
           }
-
-        }
           console.log(count);
 
       }
 
-
+     }
    };
 
 

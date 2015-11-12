@@ -1,7 +1,10 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
 
+
+   $rootScope.pushNotification = {checked : true};
+     $rootScope.pushNotification2 = {checked : true};
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -42,46 +45,103 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 
+.controller('SettingsCtrl', function() {
+    //$rootScope.pushNotification = {checked : true};
 
 
-.controller('TodoBizCtrl', function($scope, taskservice,  $cordovaVibration ) {
-    
-    $scope.tasks = taskservice.all();
-  
+})
+
+
+.controller('TodoBizCtrl', function($scope, taskservices, $stateParams,  $cordovaVibration, $rootScope, $cordovaLocalNotification ) {
+
+    $scope.tasks = taskservices.all($stateParams.todo_id);
+
     $scope.todobiz = {task:""};
-    
-    var cordova_vibration = $cordovaVibration; 
-    
-  
-  $scope.addTask = function() {
-      
-       taskservice.add({name: $scope.todobiz.task});
-       $scope.todobiz.task = "";
-      
-        }
 
-  
+   // var cordova_vibration = $cordovaVibration;
+
+
+  $scope.addTask = function() {
+
+       taskservices.add({name: $scope.todobiz.task, status: false}, $stateParams.todo_id);
+       $scope.todobiz.task = "";
+
+        if($scope.tasks.length == 0){
+            $scope.tasks = taskservices.all($stateParams.todo_id);
+       }
+
+     }
+
+
   $scope.removeTask = function(index) {
-      
-        taskservice.remove(index);
+
+        taskservices.remove(index, $stateParams.todo_id);
 
           }
-   
+
+
+
   $scope.changed = function(index){
-     
-    
-        if ($scope.tasks[index].status){
-          
-          
-           cordova_vibration.vibrate(100);
-           
+
+
+       if ($rootScope.pushNotification.checked) {
+
+
+          if($scope.tasks[index].status){
+
+            alert("hi");
+         //  try {
+             $cordovaVibration.vibrate(500);
+           //}
+           // catch (e) {
+            //  alert("vibration");
+           // }
+         }
+
+       }
+
+
+     if ($rootScope.pushNotification2.checked) {
+        var count = 0;
+
+
+        for(var i=0; i<$scope.tasks.length; i++) {
+
+
+
+          if  ($scope.tasks[i].status){
+                count ++;
+            }
+
+
         }
-      
-      
-      //alert("status = " + $scope.tasks[index].status + " name = " +$scope.tasks[index].name);
-     
-  }
+       if (count == $scope.tasks.length){
+
+          //try {
+            alert("hi");
+           
+            $cordovaLocalNotification.schedule({
+              id: 1,
+              title: 'Completed',
+              text: 'Tasks completed'
+
+            });
+          //}
+          //catch (e) {
+         //   alert("notification");
+         // }
+
+        }
+          console.log(count);
+
+      }
+
+
+   };
+
 
 });
+
+
 
 

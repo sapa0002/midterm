@@ -1,47 +1,76 @@
 angular.module('starter.services', ['ngStorage'])
 
-.factory('taskservice', function($localStorage) {
- 
-    var tasks=[];
-    
 
- if ($localStorage.tasks) {
-     
-    tasks = $localStorage.tasks;
-  } 
-    
-    /*else {
-        
-    tasks =[ {name:'Biz Task 1', status:false}, 
-                   
-             {name:'Biz Task 2', status:false }, 
-             
-             {name:'Biz Task 3', status:false } 
-           
-           ];
-  
-    }*/
-  
+  .factory('taskservices', function($localStorage) {
 
-  return {
-      all: function() {
-        return tasks;
-       },
-      
-      remove: function(index) {
-        
-        delete tasks[index];
+    var toDoLists= [];
 
-        $localStorage.tasks = tasks;
 
-    
-        },
-    
-      add: function(todotask){
-        tasks.push(todotask);
-        $localStorage.tasks = tasks;
-    
-         }
-    
-      };
-});
+
+    if ($localStorage.toDoLists) {
+
+      toDoLists = $localStorage.toDoLists;
+    }
+
+
+
+    return {
+
+      all: function(id) {
+        for (var i = 0; i < toDoLists.length; i++) {
+
+          var obj = toDoLists[i];
+          if (obj.id == id) {
+
+            return obj.tasks;
+
+          }
+        }
+        return [];
+      },
+
+      remove: function(index, id) {
+
+        for (var i = 0; i < toDoLists.length; i++) {
+
+          var obj = toDoLists[i];
+          if (obj.id == id) {
+
+            obj.tasks.splice(index, 1);
+
+            $localStorage.toDoLists = toDoLists;
+
+          }
+        }
+
+
+      },
+
+      add: function(todotask, id){
+
+        for (var i = 0; i < toDoLists.length; i++) {
+
+          var obj = toDoLists[i];
+
+          if (obj.id == id) {
+
+            obj.tasks.push(todotask);
+
+            $localStorage.toDoLists = toDoLists;
+
+            return;
+          }
+        }
+
+          toDoLists.push({id:id, tasks:[todotask]});
+
+          $localStorage.toDoLists = toDoLists;
+
+
+      }
+
+
+
+    };
+  });
+

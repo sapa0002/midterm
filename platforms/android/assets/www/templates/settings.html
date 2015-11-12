@@ -2,13 +2,18 @@
   <ion-content>
 
       <div class="list">
-      <div class="item item-button-right" ng-repeat="task in tasks track by $index" ng-show="task != undefined">
-        {{task.name}} 
-          
-          
-     <ion-toggle ng-model="airplaneMode" toggle-class="toggle-calm">Airplane Mode</ion-toggle>  
+      
+        <ion-toggle ng-model="pushNotification.checked" toggle-class="toggle-calm" >Vibrate on</ion-toggle>  
+      
       </div>
-    </div>
-       
+      
+      <div class="list">
+      
+        <ion-toggle ng-model="pushNotification2.checked" toggle-class="toggle-calm">Notify on</ion-toggle>  
+      
+      </div>
+    
+    
+                  
   </ion-content>
 </ion-view>
